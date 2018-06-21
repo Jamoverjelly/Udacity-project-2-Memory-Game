@@ -2,12 +2,19 @@
  * Create a list that holds all of your cards
  */
 const cardList = document.querySelectorAll(".card");
+
+// Create a selector for the deck (parent element containing all cards)
+const deck = document.querySelector(".deck");
+
+// Transforms the cardList object from a NodeList to an Array
 const cardsArray = Array.prototype.slice.call(cardList);
-console.log(cardsArray.constructor.name, cardsArray);
 
 // gameStart() needs to be run every time user clicks the restart icon
+const restartButton = document.querySelector(".fa-repeat");
+restartButton.addEventListener("click", gameStart);
 
 function gameStart() {
+    // successfully shuffles the contents of the cardsArray object
     shuffle(cardsArray);
 }
 
@@ -32,6 +39,17 @@ function shuffle(array) {
 
     return array;
 }
+
+// Set up an event listener on the card objects to toggle the classes
+// open and show each time any card is clicked.
+
+deck.addEventListener("click", event => {
+    const clickTarget = event.target;
+    if (clickTarget.classList.contains("card")) {
+        clickTarget.classList.toggle("open");
+        clickTarget.classList.toggle("show");
+    }
+});
 
 
 /*
