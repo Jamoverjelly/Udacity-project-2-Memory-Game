@@ -1,7 +1,15 @@
 /*
  * Create a list that holds all of your cards
  */
+const cardList = document.querySelectorAll(".card");
+const cardsArray = Array.prototype.slice.call(cardList);
+console.log(cardsArray.constructor.name, cardsArray);
 
+// gameStart() needs to be run every time user clicks the restart icon
+
+function gameStart() {
+    shuffle(cardsArray);
+}
 
 /*
  * Display the cards on the page
