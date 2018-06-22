@@ -47,31 +47,33 @@ function shuffle(array) {
 // open and show each time any card is clicked.
 
 deck.addEventListener("click", event => {
-    const clickTarget = event.target;
-    if (clickTarget.classList.contains("card") && openedCards.length < 2) {
-        toggleCardClass(clickTarget);
-        addOpenedCard(clickTarget);
+    const card = event.target;
+    if (
+        card.classList.contains("card") &&
+        openedCards.length < 2 &&
+        !openedCards.includes(card)
+    ) {
+        toggleCardClass(card);
+        addOpenedCard(card);
         if(openedCards.length === 2) {
             checkForMatch();
-        }        
+        }
     }
 });
 
-function toggleCardClass(clickTarget) {
-    clickTarget.classList.toggle("open");
-    clickTarget.classList.toggle("show");
+function toggleCardClass(card) {
+    card.classList.toggle("open");
+    card.classList.toggle("show");
 }
 
 // When a card is clicked, add the card to a *list* of "open" cards
 // (put this functionality in another function that you call
 // from this one)
-function addOpenedCard(clickTarget) {
-    openedCards.push(clickTarget);
+function addOpenedCard(card) {
+    openedCards.push(card);
 }
 
-// Array[i].children[0].classList[1].includes("substring to match")
 
-// Array[i].firstElementChild.className
 
 // if the list already has another card, check to see if the two cards match
 function checkForMatch() {
@@ -79,11 +81,35 @@ function checkForMatch() {
         openedCards[0].firstElementChild.className ===
         openedCards[1].firstElementChild.className
     ) {
-        console.log("Match!");
+        // if the cards do match, lock the cards in the open position
+        // (put this functionality in another function that you call 
+        // from this one)
+        saveMatch();
     }
     else {
-        console.log("Not a match!");
+        // if the cards do not match, remove the cards from the list
+        //  and hide the card's symbol 
+        // (put this functionality in another function that you call from this one)
+        
+        missMatch();
     }
+}
+
+function saveMatch () {
+    console.log("Match!");
+    openedCards.forEach(function(matchedCard) {
+        matchedCard.classList.add("match");
+    });
+    openedCards = [];
+}
+
+function missMatch () {
+    console.log("Not a match!");
+    setTimeout(() => {
+        toggleCardClass(openedCards[0]);
+        toggleCardClass(openedCards[1]);
+        openedCards = [];
+    }, 1000);
 }
 
 /*
