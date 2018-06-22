@@ -9,6 +9,9 @@ const deck = document.querySelector(".deck");
 // Transforms the cardList object from a NodeList to an Array
 const cardsArray = Array.prototype.slice.call(cardList);
 
+// Create a list of open cards
+let openedCards = [];
+
 // gameStart() needs to be run every time user clicks the restart icon
 const restartButton = document.querySelector(".fa-repeat");
 restartButton.addEventListener("click", gameStart);
@@ -45,12 +48,43 @@ function shuffle(array) {
 
 deck.addEventListener("click", event => {
     const clickTarget = event.target;
-    if (clickTarget.classList.contains("card")) {
-        clickTarget.classList.toggle("open");
-        clickTarget.classList.toggle("show");
+    if (clickTarget.classList.contains("card") && openedCards.length < 2) {
+        toggleCardClass(clickTarget);
+        addOpenedCard(clickTarget);
+        if(openedCards.length === 2) {
+            checkForMatch();
+        }        
     }
 });
 
+function toggleCardClass(clickTarget) {
+    clickTarget.classList.toggle("open");
+    clickTarget.classList.toggle("show");
+}
+
+// When a card is clicked, add the card to a *list* of "open" cards
+// (put this functionality in another function that you call
+// from this one)
+function addOpenedCard(clickTarget) {
+    openedCards.push(clickTarget);
+}
+
+// Array[i].children[0].classList[1].includes("substring to match")
+
+// Array[i].firstElementChild.className
+
+// if the list already has another card, check to see if the two cards match
+function checkForMatch() {
+    if (
+        openedCards[0].firstElementChild.className ===
+        openedCards[1].firstElementChild.className
+    ) {
+        console.log("Match!");
+    }
+    else {
+        console.log("Not a match!");
+    }
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
