@@ -48,12 +48,7 @@ function shuffle(array) {
 
 deck.addEventListener("click", event => {
     const card = event.target;
-    if (
-        card.classList.contains("card") &&
-        !card.classList.contains("match") &&
-        openedCards.length < 2 &&
-        !openedCards.includes(card)
-    ) {
+    if (isClickValid(card)) {
         toggleCardClass(card);
         addOpenedCard(card);
         if(openedCards.length === 2) {
@@ -61,6 +56,15 @@ deck.addEventListener("click", event => {
         }
     }
 });
+
+function isClickValid(card) {
+    return (
+        card.classList.contains("card") &&
+        !card.classList.contains("match") &&
+        openedCards.length < 2 &&
+        !openedCards.includes(card)
+    );
+}
 
 function toggleCardClass(card) {
     card.classList.toggle("open");
@@ -98,6 +102,7 @@ function saveMatch () {
         matchedCard.classList.add("match");
     });
     openedCards = [];
+    console.log("Match!");
 }
 
 function missMatch () {
@@ -106,6 +111,7 @@ function missMatch () {
         toggleCardClass(openedCards[1]);
         openedCards = [];
     }, 1000);
+    console.log("Not a match!");
 }
 
 /*
