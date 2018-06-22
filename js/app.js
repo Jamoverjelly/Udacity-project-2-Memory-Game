@@ -50,6 +50,7 @@ deck.addEventListener("click", event => {
     const card = event.target;
     if (
         card.classList.contains("card") &&
+        !card.classList.contains("match") &&
         openedCards.length < 2 &&
         !openedCards.includes(card)
     ) {
