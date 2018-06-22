@@ -73,8 +73,6 @@ function addOpenedCard(card) {
     openedCards.push(card);
 }
 
-
-
 // if the list already has another card, check to see if the two cards match
 function checkForMatch() {
     if (
@@ -90,13 +88,11 @@ function checkForMatch() {
         // if the cards do not match, remove the cards from the list
         //  and hide the card's symbol 
         // (put this functionality in another function that you call from this one)
-        
         missMatch();
     }
 }
 
 function saveMatch () {
-    console.log("Match!");
     openedCards.forEach(function(matchedCard) {
         matchedCard.classList.add("match");
     });
@@ -104,7 +100,6 @@ function saveMatch () {
 }
 
 function missMatch () {
-    console.log("Not a match!");
     setTimeout(() => {
         toggleCardClass(openedCards[0]);
         toggleCardClass(openedCards[1]);
