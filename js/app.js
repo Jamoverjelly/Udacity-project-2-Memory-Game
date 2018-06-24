@@ -12,14 +12,27 @@ const cardsArray = Array.prototype.slice.call(cardList);
 // Create a list of open cards
 let openedCards = [];
 
-// gameStart() needs to be run every time user clicks the restart icon
-const restartButton = document.querySelector(".fa-repeat");
-restartButton.addEventListener("click", gameStart);
+// Create a selector for the Moves object
+let playerMoves = 0;
 
-function gameStart() {
-    // successfully shuffles the contents of the cardsArray object
-    shuffle(cardsArray);
-}
+// gameRestart() needs to be run every time user clicks the restart icon
+const restartButton = document.querySelector(".restart");
+restartButton.addEventListener("click", function () {
+    console.log("restart clicked!");
+});
+
+// function gameRestart() {
+//     for (card of cardsArray) {
+//         if (
+//             card.classList.contains("match") ||
+//             card.classList.contains("open") ||
+//             card.classList.contains("show")
+//         ) {
+//             card.className = "card";
+//         }
+//     }
+//     shuffleDeck();
+// }
 
 /*
  * Display the cards on the page
@@ -27,6 +40,14 @@ function gameStart() {
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+function shuffleDeck() {
+    const shuffledCards = shuffle(cardsArray);
+    shuffledCards.forEach(function(card) {
+        deck.appendChild(card);
+    });
+}
+shuffleDeck()
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -53,8 +74,11 @@ deck.addEventListener("click", event => {
         addOpenedCard(card);
         if(openedCards.length === 2) {
             checkForMatch();
+            addMove();
+            //checkScore();
         }
     }
+    
 });
 
 function isClickValid(card) {
@@ -113,6 +137,32 @@ function missMatch () {
     }, 1000);
     console.log("Not a match!");
 }
+
+function addMove() {
+    playerMoves++;
+    const movesText = document.querySelector(".moves");
+    movesText.innerHTML = playerMoves;
+}
+
+function checkScore() {
+    if (playerMoves === 16 || playerMoves === 24) {
+        //hideStar();
+    }
+}
+
+function hideStar() {
+    // let stars = document.querySelector(".stars");
+    // let star = document.querySelector("li");
+    const stars = document.querySelectorAll(".stars li");
+    for (star of stars) {
+        if (star.style.display !== "none") {
+            star.style.display = "none";
+            break;
+        }
+    }
+}
+hideStar();
+hideStar();
 
 /*
  * set up the event listener for a card. If a card is clicked:
