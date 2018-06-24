@@ -15,6 +15,14 @@ let openedCards = [];
 // Create a selector for the Moves object
 let playerMoves = 0;
 
+// Create a variable to set the status of the clock on / off with a boolean
+let clockOff = true;
+
+// Create a variable to store time and set at zero
+let time = 0;
+
+let clockId;
+
 // gameRestart() needs to be run every time user clicks the restart icon
 const restartButton = document.querySelector(".restart");
 restartButton.addEventListener("click", function () {
@@ -70,12 +78,16 @@ function shuffle(array) {
 deck.addEventListener("click", event => {
     const card = event.target;
     if (isClickValid(card)) {
+        if (clockOff) {
+            startClock();
+            clockOff = false;
+        }
         toggleCardClass(card);
         addOpenedCard(card);
         if(openedCards.length === 2) {
             checkForMatch();
             addMove();
-            //checkScore();
+            checkScore();
         }
     }
     
@@ -146,13 +158,11 @@ function addMove() {
 
 function checkScore() {
     if (playerMoves === 16 || playerMoves === 24) {
-        //hideStar();
+        hideStar();
     }
 }
 
 function hideStar() {
-    // let stars = document.querySelector(".stars");
-    // let star = document.querySelector("li");
     const stars = document.querySelectorAll(".stars li");
     for (star of stars) {
         if (star.style.display !== "none") {
@@ -161,8 +171,32 @@ function hideStar() {
         }
     }
 }
-hideStar();
-hideStar();
+
+function startClock() {
+    clockId = setInterval(() => {
+        time++;
+        displayTime();
+        console.log(time);
+    }, 1000);
+}
+
+function displayTime() {
+    const clock = document.querySelector(".clock");
+    // Create variables for storing minute and second values of the game clock
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    if (seconds < 10) {
+        clock.innerHTML = `${minutes}:0${seconds}` ;
+    } else {
+        clock.innerHTML = `${minutes}:${seconds}` ;
+    }
+    console.log(clock);
+}
+
+
+function stopClock() {
+    clearInterval(clockId);
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
