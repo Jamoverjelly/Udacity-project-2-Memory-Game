@@ -1,13 +1,5 @@
-/*
- * Create a list that holds all of your cards
- */
-const cardList = document.querySelectorAll(".card");
-
 // Create a selector for the deck (parent element containing all cards)
 const deck = document.querySelector(".deck");
-
-// Transforms the cardList object from a NodeList to an Array
-const cardsArray = Array.prototype.slice.call(cardList);
 
 // Create a list of open cards
 let openedCards = [];
@@ -23,24 +15,38 @@ let time = 0;
 
 let clockId;
 
+let matched = 0;
+
 // gameRestart() needs to be run every time user clicks the restart icon
 const restartButton = document.querySelector(".restart");
-restartButton.addEventListener("click", function () {
-    console.log("restart clicked!");
-});
+restartButton.addEventListener("click", gameRestart);
 
-// function gameRestart() {
-//     for (card of cardsArray) {
-//         if (
-//             card.classList.contains("match") ||
-//             card.classList.contains("open") ||
-//             card.classList.contains("show")
-//         ) {
-//             card.className = "card";
-//         }
-//     }
-//     shuffleDeck();
-// }
+function gameRestart() {
+    resetClockAndTime();
+    resetMoves();
+    resetStars();
+    shuffleDeck();
+}
+
+function resetClockAndTime() {
+    stopClock();
+    clockOff = true;
+    time = 0;
+    displayTime();
+}
+
+function resetMoves() {
+    playerMoves = 0;
+    document.querySelector(".moves").innerHTML = playerMoves;
+}
+
+function resetStars() {
+    stars = 0;
+    const starList = document.querySelectorAll(".stars li");
+    for (star of starList) {
+        star.style.display = "inline-block";
+    }
+}
 
 /*
  * Display the cards on the page
@@ -50,12 +56,13 @@ restartButton.addEventListener("click", function () {
  */
 
 function shuffleDeck() {
-    const shuffledCards = shuffle(cardsArray);
-    shuffledCards.forEach(function(card) {
+    const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
+    const shuffledCards = shuffle(cardsToShuffle);
+    for (card of shuffledCards) {
         deck.appendChild(card);
-    });
+        card.classList.value = "card";
+    }
 }
-shuffleDeck()
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -72,18 +79,30 @@ function shuffle(array) {
     return array;
 }
 
+function gameOver() {
+    stopClock();
+    writeModalStats();
+    applyModal();
+    matched = 0;
+}
+
+function replayGame() {
+    gameRestart();
+    applyModal();
+}
+
 // Set up an event listener on the card objects to toggle the classes
 // open and show each time any card is clicked.
 
 deck.addEventListener("click", event => {
-    const card = event.target;
-    if (isClickValid(card)) {
+    const clickTarget = event.target;
+    if (isClickValid(clickTarget)) {
         if (clockOff) {
             startClock();
             clockOff = false;
         }
-        toggleCardClass(card);
-        addOpenedCard(card);
+        toggleCardClass(clickTarget);
+        addOpenedCard(clickTarget);
         if(openedCards.length === 2) {
             checkForMatch();
             addMove();
@@ -93,12 +112,12 @@ deck.addEventListener("click", event => {
     
 });
 
-function isClickValid(card) {
+function isClickValid(clickTarget) {
     return (
-        card.classList.contains("card") &&
-        !card.classList.contains("match") &&
+        clickTarget.classList.contains("card") &&
+        !clickTarget.classList.contains("match") &&
         openedCards.length < 2 &&
-        !openedCards.includes(card)
+        !openedCards.includes(clickTarget)
     );
 }
 
@@ -110,8 +129,8 @@ function toggleCardClass(card) {
 // When a card is clicked, add the card to a *list* of "open" cards
 // (put this functionality in another function that you call
 // from this one)
-function addOpenedCard(card) {
-    openedCards.push(card);
+function addOpenedCard(clickTarget) {
+    openedCards.push(clickTarget);
 }
 
 // if the list already has another card, check to see if the two cards match
@@ -131,14 +150,17 @@ function checkForMatch() {
         // (put this functionality in another function that you call from this one)
         missMatch();
     }
+    const TOTAL_PAIRS = 8;
+    if (matched === TOTAL_PAIRS) {
+        gameOver();
+    }
 }
 
 function saveMatch () {
-    openedCards.forEach(function(matchedCard) {
-        matchedCard.classList.add("match");
-    });
+    openedCards[0].classList.toggle("match");
+    openedCards[1].classList.toggle("match");
     openedCards = [];
-    console.log("Match!");
+    matched++;
 }
 
 function missMatch () {
@@ -147,7 +169,6 @@ function missMatch () {
         toggleCardClass(openedCards[1]);
         openedCards = [];
     }, 1000);
-    console.log("Not a match!");
 }
 
 function addMove() {
@@ -223,32 +244,14 @@ function writeModalStats() {
     starStat.innerHTML = `Stars = ${stars}` ;
 }
 
-// Modal tests
-time = 150;
-displayTime(); // 2:30
-playerMoves = 16;
-checkScore(); // 2 stars
-
-writeModalStats(); // Write stats to modal
-applyModal(); // Open modal
-
 document.querySelector(".modal__cancel").addEventListener("click", function() {
     applyModal();
 });
 
-document.querySelector(".modal__replay").addEventListener("click", function() {
-    console.log("replay");
+document.querySelector(".modal__close").addEventListener("click", function() {
+    applyModal();
 });
 
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+document.querySelector(".modal__replay").addEventListener("click", function() {
+    replayGame();
+});
