@@ -172,11 +172,21 @@ function hideStar() {
     }
 }
 
+function getStars() {
+    const stars = document.querySelectorAll(".stars li");
+    starCount = 0;
+    for (star of stars) {
+        if (star.style.display !== "none") {
+            starCount++;
+        }
+    }
+    return starCount;
+}
+
 function startClock() {
     clockId = setInterval(() => {
         time++;
         displayTime();
-        console.log(time);
     }, 1000);
 }
 
@@ -190,7 +200,6 @@ function displayTime() {
     } else {
         clock.innerHTML = `${minutes}:${seconds}` ;
     }
-    console.log(clock);
 }
 
 function stopClock() {
@@ -201,6 +210,37 @@ function applyModal() {
     const modal = document.querySelector(".modal__background");
     modal.classList.toggle("hide");
 }
+
+function writeModalStats() {
+    const timeStat = document.querySelector(".modal__time");
+    const clockTime = document.querySelector(".clock").innerHTML;
+    const moveStat = document.querySelector(".modal__moves");
+    const starStat = document.querySelector(".modal__stars");
+    const stars = getStars();
+
+    timeStat.innerHTML = `Time = ${clockTime}` ;
+    moveStat.innerHTML = `Moves = ${playerMoves}` ;
+    starStat.innerHTML = `Stars = ${stars}` ;
+}
+
+// Modal tests
+time = 150;
+displayTime(); // 2:30
+playerMoves = 16;
+checkScore(); // 2 stars
+
+writeModalStats(); // Write stats to modal
+applyModal(); // Open modal
+
+document.querySelector(".modal__cancel").addEventListener("click", function() {
+    applyModal();
+});
+
+document.querySelector(".modal__replay").addEventListener("click", function() {
+    console.log("replay");
+});
+
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
