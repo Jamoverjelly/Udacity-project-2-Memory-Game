@@ -193,9 +193,13 @@ function displayTime() {
     console.log(clock);
 }
 
-
 function stopClock() {
     clearInterval(clockId);
+}
+
+function applyModal() {
+    const modal = document.querySelector(".modal__background");
+    modal.classList.toggle("hide");
 }
 
 /*
