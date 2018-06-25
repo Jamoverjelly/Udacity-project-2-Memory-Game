@@ -255,3 +255,12 @@ document.querySelector(".modal__close").addEventListener("click", function() {
 document.querySelector(".modal__replay").addEventListener("click", function() {
     replayGame();
 });
+
+// ======== Attribution ========
+// This project was completed while referencing each
+// post from Matthew Cranford's Blog series:
+// "Memory Game Walkthrough" which begins at this URL:
+// https://matthewcranford.com/memory-game-walkthrough-part-1-setup/
+// Efforts were made in completing each stage of the project to
+// preserve originality between my project and the walkthrough
+// ===== End Attribution =======
