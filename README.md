@@ -87,7 +87,8 @@ Comments are present and effectively explain longer code procedure when necessar
 
 Code is formatted with consistent, logical, and easy-to-read formatting as described in the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/javascript.html).
 
+<br>
 
 ## Attribution
 
-This project was completed while referencing each post from Matthew Cranford's Blog series: "Memory Game Walkthrough" which begins at [this URL](https://matthewcranford.com/memory-game-walkthrough-part-1-setup/). Efforts were made in completing each stage of the project to preserve originality between my project and the walkthrough.
+This project was completed while referencing each post from Matthew Cranford's Blog series: "Memory Game Walkthrough" which begins at [this link](https://matthewcranford.com/memory-game-walkthrough-part-1-setup/). Efforts were made in completing each stage of the project to preserve originality between my project and the walkthrough.
