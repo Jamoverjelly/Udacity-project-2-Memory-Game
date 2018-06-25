@@ -13,8 +13,10 @@ let clockOff = true;
 // Create a variable to store time and set at zero
 let time = 0;
 
+// Create global variable to assist with starting page clock
 let clockId;
 
+// Create global to set starting count of matched cards
 let matched = 0;
 
 // gameRestart() needs to be run every time user clicks the restart icon
