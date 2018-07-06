@@ -1,4 +1,4 @@
-# Memory Game Project
+# Memory Game Project: Version Two
 
 ## Introduction
 As the second project in Udacity's Front-End Nanodegree program, the commits made on this repo will demonstrate my abilities with using HTML, CSS, and JavaScript to build a fully-functioning web-based game.
@@ -74,7 +74,6 @@ All application components are usable across modern desktop, tablet, and phone b
 #### Documentation
 
 ##### README
-*Updated v1 on 6/21/2018*
 A `README` file is included detailing the game and all dependencies.
 
 
@@ -86,3 +85,36 @@ Comments are present and effectively explain longer code procedure when necessar
 ##### Code Quality
 
 Code is formatted with consistent, logical, and easy-to-read formatting as described in the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/javascript.html).
+
+<hr>
+<br>
+
+## Attribution References
+
+- Helper code for building the modal was referenced on CSS-Tricks
+at https://css-tricks.com/considerations-styling-modal/
+on July 2, 2018
+
+- Helper code for building the modal overlay was referenced from
+Codrops article, CSS Overlay Techniques, by Sara Soueidan
+at https://css-tricks.com/considerations-styling-modal/
+on July 2, 2018
+
+- Helper code for styling buttons of the modal was referenced on CSS-Tricks
+at https://css-tricks.com/overriding-default-button-styles/
+on July 2, 2018
+
+- Helper code for updating the page's score counter was referenced at
+https://stackoverflow.com/questions/15280851/javascript-increment-value-inside-html
+on June 29, 2018
+
+- Referenced helper code for updating the timer, and
+starting and stopping the timer from Udacity Student Leader,
+Chris N's post on the Slack Channel for this project (fend_proj_2).
+The full post can be found at this link: 
+https://gwgnanodegrees.slack.com/files/UA8PXHUR3/FB0Q3CSMB/Getting_the_Memory_Game_timer_to_work
+and was accessed on June 30, 2018.
+
+- Original code for *version one* of this project was built following
+Matthew Cranford's Memory Game Walkthrough which was accessed on June 21, 2018
+from: https://matthewcranford.com/memory-game-walkthrough-part-1-setup/

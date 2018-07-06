@@ -16,19 +16,26 @@
         </header>
 
         <section class="score-panel">
+            <!-- GAME TIMER -->
+            <span class="timer">0:00</span>
+
+            <!-- STARS SCORE -->
         	<ul class="stars">
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
-        	</ul>
+            </ul>
+            
+            <!-- MOVES COUNTER -->
+        	<span class="moves">0</span> Moves
 
-        	<span class="moves">3</span> Moves
-
+            <!-- RESTART BUTTON -->
             <div class="restart">
         		<i class="fa fa-repeat"></i>
         	</div>
         </section>
 
+        <!-- DECK OF CARDS -->
         <ul class="deck">
             <li class="card">
                 <i class="fa fa-diamond"></i>
@@ -36,7 +43,7 @@
             <li class="card">
                 <i class="fa fa-paper-plane-o"></i>
             </li>
-            <li class="card match">
+            <li class="card">
                 <i class="fa fa-anchor"></i>
             </li>
             <li class="card">
@@ -45,7 +52,7 @@
             <li class="card">
                 <i class="fa fa-cube"></i>
             </li>
-            <li class="card match">
+            <li class="card">
                 <i class="fa fa-anchor"></i>
             </li>
             <li class="card">
@@ -66,7 +73,7 @@
             <li class="card">
                 <i class="fa fa-bomb"></i>
             </li>
-            <li class="card open show">
+            <li class="card">
                 <i class="fa fa-bolt"></i>
             </li>
             <li class="card">
@@ -81,6 +88,44 @@
         </ul>
     </div>
 
+    <!-- ######## Start Reference to Helper Code ######## -->
+    <!-- MODAL OVERLAY -->
+    <div class='overlay hide'>
+        <!-- MODAL POPUP -->
+        <div class='modal-wrapper'>
+            <div class='modal-container'>
+                <div class='modal-header'>
+                    <h2 class='congrats'>Congratulations! You Won!</h2>
+                    <i id='close' class="fa fa-times fa-lg"></i>
+                </div>
+                <div class='modal-body'>
+                    <div class='stats-left'>
+                        <h3 class='game-stats'>Game Stats</h3>
+                    </div>
+                    <div class='stats-right'>
+                        <span class='time-stat'></span>
+                        <span class='moves-stat'></span>
+                        <span class='star-stat'></span>
+                    </div>
+                </div>
+                <div class='modal-footer'>
+                    <button class='cancel-btn'>
+                        Cancel
+                    </button>
+                    <button class='replay-btn'>
+                        Play Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ######## End Reference to Helper Code ########
+
+    ######## Begin Attribution ########
+    Helper code for building the modal was referenced on CSS-Tricks
+    at https://css-tricks.com/considerations-styling-modal/
+    on July 2, 2018
+    ######## End Attribution ######## -->
     <script src="js/app.js"></script>
 </body>
 </html>
