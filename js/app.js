@@ -324,4 +324,5 @@ function resetGame() {
     resetMoveCount();
     resetCards();
     matchCount = 0;
+    openCards = [];
 }
