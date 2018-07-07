@@ -89,6 +89,13 @@ Code is formatted with consistent, logical, and easy-to-read formatting as descr
 <hr>
 <br>
 
+## Required Dependencies
+
+- [Font Awesome](https://fontawesome.com/) - for incorporating specialized vector icons in the game's cards and UI
+
+- [Google Fonts](https://fonts.google.com/) - for applying open source typographical font styling to the game's text content
+
+
 ## Attribution References
 
 - Helper code for building the modal was referenced on CSS-Tricks
