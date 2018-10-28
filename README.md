@@ -91,4 +91,4 @@ Code is formatted with consistent, logical, and easy-to-read formatting as descr
 
 ## Attribution
 
-This project was completed while referencing each post from Matthew Cranford's Blog series: "Memory Game Walkthrough" which begins at [this link](https://matthewcranford.com/memory-game-walkthrough-part-1-setup/). Efforts were made in completing each stage of the project to preserve originality between my project and the walkthrough.
+Analyzed and reviewed notes on Matthew Cranford's Blog series: "Memory Game Walkthrough" which begins at [this link](https://matthewcranford.com/memory-game-walkthrough-part-1-setup/) to overcome code obstacles while completing this project.
