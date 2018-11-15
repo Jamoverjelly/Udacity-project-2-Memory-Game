@@ -1,36 +1,41 @@
 html {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
-    font-family: 'Coda', cursive;
+  background: #ffffff url("../img/geometry2.png"); /* Background pattern from Subtle Patterns */
+  font-family: "Coda", cursive;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.top-container {
+  margin: 0 auto;
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  text-align: center;
 }
 
 /*
@@ -38,47 +43,50 @@ h1 {
  */
 
 .deck {
-    width: 660px;
-    min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-    border-radius: 10px;
-    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 3em;
+  width: 660px;
+  min-height: 680px;
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+  /* Updated layout of deck ul to grid layout for handling responsive layout */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-gap: 35px;
+  margin: 0 0 3em;
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
-    font-size: 0;
-    color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+  /* Update height and width of card to 100% of the grid cell
+    once grid gap is set to 35px */
+  height: 100%;
+  width: 100%;
+  background: #2e3d49;
+  font-size: 0;
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
-    cursor: default;
+  transform: rotateY(0);
+  background: #02b3e4;
+  cursor: default;
 }
 
 .deck .card.show {
-    font-size: 33px;
+  font-size: 33px;
 }
 
 .deck .card.match {
-    cursor: default;
-    background: #02ccba;
-    font-size: 33px;
+  cursor: default;
+  background: #02ccba;
+  font-size: 33px;
 }
 
 /*
@@ -86,89 +94,174 @@ h1 {
  */
 
 .score-panel {
-    text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
+  text-align: left;
+  width: 345px;
+  margin-bottom: 10px;
 }
 
 .score-panel .stars {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    margin: 0 5px 0 0;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  margin: 0 5px 0 0;
 }
 
 .score-panel .stars li {
-    list-style: none;
-    display: inline-block;
+  list-style: none;
+  display: inline-block;
 }
 
 .score-panel .restart {
-    float: right;
-    cursor: pointer;
+  float: right;
+  cursor: pointer;
 }
 
-.modal__background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.44);
+/* ######## Start Reference to Helper Code ######## */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+/* ######## End Reference to Helper Code ######## */
+
+/* ######## Begin Attribution ######## */
+/* Helper code for building the modal overlay was referenced from
+Codrops article, CSS Overlay Techniques, by Sara Soueidan
+at https://css-tricks.com/considerations-styling-modal/
+on July 2, 2018 */
+/* ######## End Attribution ######## */
+
+/* ######## Start Reference to Helper Code ######## */
+.modal-wrapper {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  max-width: 100%;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  /* tranform property to enhance center-position of modal relative to page */
+  transform: translate(-50%, -120%);
+  /* position modal on top of overlay */
+  z-index: 20;
 }
 
-.modal__window {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    /* height: 300px; Removing so window height size derives from content*/
-    width: 400px;
-    border-radius: 10px;
-    transform: translate(-50%, -115%);
-    background: #ffffff;
+.modal-header {
+  /* apply flexbox layout */
+  display: flex;
+  /* push elements to either side of flex container (no spacing on ends) */
+  justify-content: space-between;
+  border-bottom: 0.5px solid gray;
 }
 
-.modal__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.5em;
-    border-bottom: 1px solid gray;
+.congrats {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 200;
+  /* fix padding around congrats element */
+  padding: 0 0.5rem;
+  /* fix margin relative to bottom border */
+  margin-bottom: 0.5rem;
 }
 
-/* .modal__close {
-    
-} */
-
-.modal__body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid gray;
+#close {
+  /* position close icon in upper-right of modal */
+  padding: 0.25em;
 }
 
-.modal__footer {
-    display: flex;
-    justify-content: space-around;
-    padding: 1rem;
+#close:hover {
+  color: red;
 }
 
-.modal__button {
-    width: 60px;
-    height: 30px;
-    border-radius: 2.5px;
+.modal-body {
+  /* apply flexbox layout */
+  display: flex;
+  /* set flex-direction relative to cross-axis */
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 20px 0 20px 0;
+  border-bottom: 0.5px solid gray;
 }
+
+.stats-left {
+  display: flex;
+}
+
+.stats-right {
+  display: flex;
+  /* set each stat relative to the cross axis with flex-direction: column */
+  flex-direction: column;
+}
+
+.game-stats {
+  /* fix heading relative to nearby elements */
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 15px 0;
+}
+/* ######## End Reference to Helper Code ######## */
+
+/* ######## Begin Attribution ######## */
+/* Helper code for building the modal was referenced on CSS-Tricks
+at https://css-tricks.com/considerations-styling-modal/
+on July 2, 2018 */
+/* ######## End Attribution ######## */
+
+/* ######## Start Reference to Helper Code ######## */
+button {
+  font-size: 100%;
+  font-family: inherit;
+  font-weight: bold;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 6px;
+  transition: background 300ms ease-in-out;
+}
+
+.cancel-btn:hover,
+.cancel-btn:focus {
+  background-color: red;
+  color: #f9fafb;
+}
+
+.replay-btn:hover,
+.replay-btn:focus {
+  background-color: green;
+  color: #f9fafb;
+}
+/* ######## End Reference to Helper Code ######## */
+
+/* ######## Begin Attribution ######## */
+/* Helper code for styling buttons of the modal was referenced on CSS-Tricks
+at https://css-tricks.com/overriding-default-button-styles/
+on July 2, 2018 */
+/* ######## End Attribution ######## */
 
 .hide {
-    display: none;
+  display: none;
 }
 
-/* ======== Attribution ========
-This project was completed while referencing each
-post from Matthew Cranford's Blog series:
-"Memory Game Walkthrough" which begins at this URL:
-https://matthewcranford.com/memory-game-walkthrough-part-1-setup/
-Efforts were made in completing each stage of the project to
-preserve originality between my project and the walkthrough
-===== End Attribution ======= */
+@media screen and (max-width: 700px) {
+  .deck {
+    max-width: 90%;
+    min-height: 35em;
+    grid-gap: 25px;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  .deck {
+    max-width: 90%;
+    min-height: 24em;
+    grid-gap: 15px;
+  }
+}

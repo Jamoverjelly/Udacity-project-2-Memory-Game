@@ -1,61 +1,202 @@
-// Create a selector for the deck (parent element containing all cards)
-const deck = document.querySelector(".deck");
+// Get parent element, deck and store into global variable reference
+const deck = document.querySelector('.deck');
 
-// Create a list of open cards
-let openedCards = [];
+// call function to shuffle cards each time page is loaded. NOTE, global variable, deck must be declared first
+shuffleCards();
 
-// Create a selector for the Moves object
-let playerMoves = 0;
+// Create global, mutable array for storing up to two cards for checking
+let openCards = [];
 
-// Create a variable to set the status of the clock on / off with a boolean
-let clockOff = true;
+// Create mutable variable for storing player move count
+let playerMoveCount = 0;
 
-// Create a variable to store time and set at zero
-let time = 0;
+// Create mutable variable for storing number of stars in global namespace
+let starCount = 0;
 
-// Create global variable to assist with starting page clock
-let clockId;
+// Initialize mutable variables for working with the timer functionality
+let timerSeconds = 0;
+let timerMinutes = 0;
+let timer;
+let timerActive = false;
 
-// Create global to set starting count of matched cards
-let matched = 0;
+// Set mutable counter variable for storing matches in global namespace
+let matchCount = 0;
 
-// gameRestart() needs to be run every time user clicks the restart icon
-const restartButton = document.querySelector(".restart");
-restartButton.addEventListener("click", gameRestart);
+// Create event listener to restart the game, when the restart button is clicked
+document.querySelector('.restart').addEventListener('click', resetGame);
 
-function gameRestart() {
-    resetClockAndTime();
-    resetMoves();
-    resetStars();
-    shuffleDeck();
+// Declare variables for getting and working with interactive modal elements
+// from document
+const closeIcon = document.querySelector('#close');
+
+const cancelButton = document.querySelector('.cancel-btn');
+
+const replayButton = document.querySelector('.replay-btn');
+
+// Event listener delegated to parent, listening for clicks on all children
+deck.addEventListener('click', function(e) {
+    // card variable initialized in scope references the target property of the click event
+    const card = e.target;
+    // First validate context of click event before running additional functionality
+    if (clickCheck(card)) {
+        startTimer();
+        toggleClass(card);
+        openCards.push(card);
+        if (openCards.length === 2) {
+            checkForMatch();
+            countMove();
+            checkMovesCount();
+        }
+    }
+});
+
+// Function checking and limiting the click event to set of unmatched, unique cards:
+function clickCheck(card) {
+    return (
+        // Confirm the length of cards array is less than 2
+        openCards.length < 2 &&
+        // Confirm target of click event does not already exist in the array
+        !openCards.includes(card) &&
+        // Confirm the click occured on element having a class of 'card'
+        card.classList.contains('card') &&
+        // Confirm the click did not occur on card already having class of match (discount this move)
+        !card.classList.contains('match')
+    );
 }
 
-function resetClockAndTime() {
-    stopClock();
-    clockOff = true;
-    time = 0;
-    displayTime();
+// Toggle open and show class on card to reveal uncovered side
+function toggleClass(card) {
+    card.classList.toggle('open');
+    card.classList.toggle('show');
 }
 
-function resetMoves() {
-    playerMoves = 0;
-    document.querySelector(".moves").innerHTML = playerMoves;
+function checkForMatch() {
+    // check for match
+    if (openCards[0].firstElementChild.className == 
+        openCards[1].firstElementChild.className) {
+            saveMatch();
+            countMatches();
+    } else {
+            misMatch();
+        }
 }
 
-function resetStars() {
-    stars = 0;
-    const starList = document.querySelectorAll(".stars li");
-    for (star of starList) {
-        star.style.display = "inline-block";
+function saveMatch() {
+    openCards[0].classList.toggle('match');
+    openCards[1].classList.toggle('match');
+    openCards = [];
+    matchCount++;
+}
+
+function countMatches() {
+    // Set winning condition number
+    const winCount = 8;
+    // If number matched cards equals winning condition, run functions to end the game
+    if(matchCount === winCount) {
+        setTimeout(function() {
+            updateModal();
+            stopTimer();
+            showModal();
+            starCount = 0;
+            matchCount = 0;
+        }, 1000);
     }
 }
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+function misMatch() {
+    setTimeout(function () {
+        for (card of openCards) {
+            card.classList.toggle('open');
+            card.classList.toggle('show');
+        }
+        openCards = [];
+    }, 1000);
+}
+
+// ######## Start Reference to Helper Code ######## //
+
+// Set player's number of moves equal to value of playerMoveCount
+function countMove() {
+    // Increment move score value after each validated click
+    playerMoveCount++;
+    // Get player moves element from document
+    const playerMoveBoard = document.querySelector('.moves');
+    // Update page text using innerHTML
+    playerMoveBoard.innerHTML = playerMoveCount;
+}
+// ######## End Reference for Helper Code ######## //
+
+/* Begin Attribution
+    Referenced helper code for updating the page's score counter at
+    https://stackoverflow.com/questions/15280851/javascript-increment-value-inside-html
+    on June 29, 2018
+End Attribution */
+
+function checkMovesCount() {
+    // set terms for removing star penalty
+    if (playerMoveCount === 16 || playerMoveCount === 24) {
+        hideStar();
+    }
+}
+
+function hideStar() {
+    // get the star elements from the document object
+    const starsSelect = document.querySelectorAll('.stars li');
+    // hide star from page
+    for (star of starsSelect) {
+        // if element in starsSelect collection, does not have its display class set to none, set it to none
+        if (star.style.display !== 'none') {
+            star.style.display = 'none';
+            // Add break to avoid removing more than single star at a time.
+            break;
+        }
+    }
+}
+
+// ######## Start Reference to Helper Code ######## //
+
+function updateTimer() {
+    timerSeconds++;
+
+    if (timerSeconds < 10) {
+        timerSeconds = `0${timerSeconds}`
+    }
+
+    if (timerSeconds >= 60) {
+        timerMinutes++;
+        timerSeconds = '00';
+    }
+
+    const pageTimer = document.querySelector('.timer')
+    
+    pageTimer.innerHTML = timerMinutes + ':' + timerSeconds;
+}
+
+function startTimer() {
+    if (timerActive == false) {
+        timer = setInterval(updateTimer, 1000);
+        timerActive = true;
+    }
+}
+
+function stopTimer() {
+    clearInterval(timer);
+    timerSeconds = 0;
+    timerMinutes = 0;
+    timerActive = false;
+}
+
+// ######## End Reference for Helper Code ######## //
+
+// ######## Begin Attribution ######## //
+// Referenced helper code for updating the timer, and
+// starting and stopping the timer from Udacity Student Leader,
+// Chris N's post on the Slack Channel for this project (fend_proj_2).
+// The full post can be found at this link: 
+// https://gwgnanodegrees.slack.com/files/UA8PXHUR3/FB0Q3CSMB/Getting_the_Memory_Game_timer_to_work
+// and was accessed on June 30, 2018.
+
+// ######## End Attribution ######## //
 
 function shuffleDeck() {
     const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
@@ -81,188 +222,116 @@ function shuffle(array) {
     return array;
 }
 
-function gameOver() {
-    stopClock();
-    writeModalStats();
-    applyModal();
-    matched = 0;
+function shuffleCards() {
+    // Get children of deck, cards and store into variable reference
+    const cards = document.querySelectorAll('.card');
+   
+    // Array created from NodeList
+    const cardsArray = Array.from(cards);
+   
+    // Pass the cardsArray object as parameter to shuffle function and assign to new variable
+    const shuffledCards = shuffle(cardsArray);
+   
+    // Deliver each card object to the parent 'deck' global in the new shuffled order
+    shuffledCards.forEach(function(card) {
+       // Card objects are successively updated into DOM parent node object
+       deck.appendChild(card);
+   });
 }
 
-function replayGame() {
-    gameRestart();
-    applyModal();
-}
-
-// Set up an event listener on the card objects to toggle the classes
-// open and show each time any card is clicked.
-
-deck.addEventListener("click", event => {
-    const clickTarget = event.target;
-    if (isClickValid(clickTarget)) {
-        if (clockOff) {
-            startClock();
-            clockOff = false;
-        }
-        toggleCardClass(clickTarget);
-        addOpenedCard(clickTarget);
-        if(openedCards.length === 2) {
-            checkForMatch();
-            addMove();
-            checkScore();
-        }
-    }
-    
-});
-
-function isClickValid(clickTarget) {
-    return (
-        clickTarget.classList.contains("card") &&
-        !clickTarget.classList.contains("match") &&
-        openedCards.length < 2 &&
-        !openedCards.includes(clickTarget)
-    );
-}
-
-function toggleCardClass(card) {
-    card.classList.toggle("open");
-    card.classList.toggle("show");
-}
-
-// When a card is clicked, add the card to a *list* of "open" cards
-// (put this functionality in another function that you call
-// from this one)
-function addOpenedCard(clickTarget) {
-    openedCards.push(clickTarget);
-}
-
-// if the list already has another card, check to see if the two cards match
-function checkForMatch() {
-    if (
-        openedCards[0].firstElementChild.className ===
-        openedCards[1].firstElementChild.className
-    ) {
-        // if the cards do match, lock the cards in the open position
-        // (put this functionality in another function that you call 
-        // from this one)
-        saveMatch();
-    }
-    else {
-        // if the cards do not match, remove the cards from the list
-        //  and hide the card's symbol 
-        // (put this functionality in another function that you call from this one)
-        missMatch();
-    }
-    const TOTAL_PAIRS = 8;
-    if (matched === TOTAL_PAIRS) {
-        gameOver();
-    }
-}
-
-function saveMatch () {
-    openedCards[0].classList.toggle("match");
-    openedCards[1].classList.toggle("match");
-    openedCards = [];
-    matched++;
-}
-
-function missMatch () {
-    setTimeout(() => {
-        toggleCardClass(openedCards[0]);
-        toggleCardClass(openedCards[1]);
-        openedCards = [];
-    }, 1000);
-}
-
-function addMove() {
-    playerMoves++;
-    const movesText = document.querySelector(".moves");
-    movesText.innerHTML = playerMoves;
-}
-
-function checkScore() {
-    if (playerMoves === 16 || playerMoves === 24) {
-        hideStar();
-    }
-}
-
-function hideStar() {
-    const stars = document.querySelectorAll(".stars li");
-    for (star of stars) {
-        if (star.style.display !== "none") {
-            star.style.display = "none";
-            break;
+function resetCards() {
+    const cards = document.querySelectorAll('.card');
+    for (card of cards) {
+        if (card.classList.contains('show') ||
+            card.classList.contains('show') ||
+            card.classList.contains('match')
+        ) {
+            card.className = 'card';
         }
     }
 }
 
-function getStars() {
-    const stars = document.querySelectorAll(".stars li");
+function resetMoveCount() {
+    playerMoveCount = 0;
+    // Get player moves element from document
+    const playerMoveBoard = document.querySelector('.moves');
+    // Update page text using innerHTML
+    playerMoveBoard.innerHTML = playerMoveCount;
+}
+
+function resetTimer() {
+    stopTimer();
+    const pageTimer = document.querySelector('.timer');
+    pageTimer.innerHTML = timerMinutes + ':' + `0${timerSeconds}`;
+}
+
+function resetStars() {
+    // get the star elements from the document object
+    const starsSelect = document.querySelectorAll('.stars li');
+    // reveal all hidden stars
+    for (star of starsSelect) {
+        // if element in starsSelect collection, does not have its display class set to none, set it to none
+        if (star.style.display == 'none') {
+            star.style.display = 'inline-block';
+        }
+    }
+    // reset count of stars in starCount variable
     starCount = 0;
-    for (star of stars) {
-        if (star.style.display !== "none") {
+}
+
+function getStarCount() {
+    const starsSelect = document.querySelectorAll('.stars li');
+    for (star of starsSelect) {
+        if(star.style.display !== 'none') {
             starCount++;
         }
     }
     return starCount;
 }
 
-function startClock() {
-    clockId = setInterval(() => {
-        time++;
-        displayTime();
-    }, 1000);
+function updateModal() {
+    // get time-stat from modal
+    const pageTimeStat = document.querySelector('.time-stat');
+    // write time-stat to modal
+    pageTimeStat.innerHTML = 'Time: ' + timerMinutes + ':' + timerSeconds;
+
+    // get moves-stat from modal
+    const pageMovesStat = document.querySelector('.moves-stat');
+    // write moves-stat to modal
+    pageMovesStat.innerHTML = 'Moves: ' + `${playerMoveCount}`
+
+    // get star-stat from modal
+    const pageStarStat = document.querySelector('.star-stat');
+    // call getStarCount to get starCount value
+    getStarCount();
+    // write star-stat to modal
+    pageStarStat.innerHTML = 'Stars: ' + `${starCount}`
 }
 
-function displayTime() {
-    const clock = document.querySelector(".clock");
-    // Create variables for storing minute and second values of the game clock
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    if (seconds < 10) {
-        clock.innerHTML = `${minutes}:0${seconds}` ;
-    } else {
-        clock.innerHTML = `${minutes}:${seconds}` ;
-    }
+function showModal() {
+    const overlay = document.querySelector('.overlay');
+    overlay.classList.toggle('hide');
 }
 
-function stopClock() {
-    clearInterval(clockId);
-}
-
-function applyModal() {
-    const modal = document.querySelector(".modal__background");
-    modal.classList.toggle("hide");
-}
-
-function writeModalStats() {
-    const timeStat = document.querySelector(".modal__time");
-    const clockTime = document.querySelector(".clock").innerHTML;
-    const moveStat = document.querySelector(".modal__moves");
-    const starStat = document.querySelector(".modal__stars");
-    const stars = getStars();
-
-    timeStat.innerHTML = `Time = ${clockTime}` ;
-    moveStat.innerHTML = `Moves = ${playerMoves}` ;
-    starStat.innerHTML = `Stars = ${stars}` ;
-}
-
-document.querySelector(".modal__cancel").addEventListener("click", function() {
-    applyModal();
+closeIcon.addEventListener('click', function() {
+    showModal();
 });
 
-document.querySelector(".modal__close").addEventListener("click", function() {
-    applyModal();
+cancelButton.addEventListener('click', function() {
+    showModal();
 });
 
-document.querySelector(".modal__replay").addEventListener("click", function() {
-    replayGame();
+replayButton.addEventListener('click', function() {
+    showModal();
+    resetGame();
 });
 
-// ======== Attribution ========
-// This project was completed while referencing each
-// post from Matthew Cranford's Blog series:
-// "Memory Game Walkthrough" which begins at this URL:
-// https://matthewcranford.com/memory-game-walkthrough-part-1-setup/
-// Efforts were made in completing each stage of the project to
-// preserve originality between my project and the walkthrough
-// ===== End Attribution =======
+function resetGame() {
+    resetTimer();
+    resetStars();
+    shuffleCards();
+    resetMoveCount();
+    resetCards();
+    matchCount = 0;
+    openCards = [];
+}
