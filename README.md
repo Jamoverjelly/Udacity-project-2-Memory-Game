@@ -3,7 +3,7 @@
 ## Introduction
 As the second project in Udacity's Front-End Nanodegree program, the commits made on this repo will demonstrate my abilities with using HTML, CSS, and JavaScript to build a fully-functioning web-based game.
 
-The below game description and project specification are based on Udacity's own guidlines for completing the project.
+The below game description and project specification are based on Udacity's own guidelines for completing the project.
 
 ## How The Game Works
 

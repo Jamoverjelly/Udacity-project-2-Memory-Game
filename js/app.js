@@ -126,11 +126,11 @@ function countMove() {
 }
 // ######## End Reference for Helper Code ######## //
 
-// ######## Begin Attribution ######## //
-// Referenced helper code for updating the page's score counter at
-// https://stackoverflow.com/questions/15280851/javascript-increment-value-inside-html
-// on June 29, 2018
-// ######## End Attribution ######## //
+/* Begin Attribution
+    Referenced helper code for updating the page's score counter at
+    https://stackoverflow.com/questions/15280851/javascript-increment-value-inside-html
+    on June 29, 2018
+End Attribution */
 
 function checkMovesCount() {
     // set terms for removing star penalty
