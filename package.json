@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/Jamoverjelly/Udacity-project-2-Memory-Game/issues"
   },
-  "homepage": "https://jamoverjelly.github.io/Udacity-project-2-Memory-Game",
+  "homepage": "https://jamoverjelly.github.io/Udacity-project-2-Memory-Game/",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "npm": "^6.4.1"
