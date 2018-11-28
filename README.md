@@ -22,7 +22,7 @@ The game ends once all cards have been correctly matched.
 ## Viewing The Project Online
 
 You can view a deployed version of my Memory Game application at the following address:
-https://jamoverjelly.github.io/Udacity-project-2-Memory-Game/
+https://github.com/Jamoverjelly/Udacity-project-2-Memory-Game
 
 <hr>
 
