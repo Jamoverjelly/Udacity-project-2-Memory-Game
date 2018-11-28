@@ -1,0 +1,23 @@
+{
+  "name": "memory-game",
+  "version": "1.0.0",
+  "description": "Memory Game Project for Udacity's FEND",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jamoverjelly/Udacity-project-2-Memory-Game.git"
+  },
+  "author": "Jamie Strausbaugh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jamoverjelly/Udacity-project-2-Memory-Game/issues"
+  },
+  "homepage": "https://jamoverjelly.github.io/Udacity-project-2-Memory-Game",
+  "dependencies": {
+    "gh-pages": "^2.0.1",
+    "npm": "^6.4.1"
+  }
+}
